@@ -2,6 +2,8 @@
 
 * {
   font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar-brand img {
@@ -93,12 +95,14 @@ button {
   outline: none;
   border-radius: 5px;
   font-size: 18px;
+  width: 33%;
 }
 
 .contact_form_text textarea {
   outline: none;
   border-radius: 5px;
   font-size: 18px;
+  width: 100%;
 }
 
 .contact_form_container {
@@ -121,8 +125,8 @@ button {
 /* About us Page  */
 
 .container img {
-  height: 510px;
-  width: 380px;
+  height: 275px;
+  width: 270px;
 }
 
 .emp-profile {
@@ -141,7 +145,16 @@ button {
 
 .home_bg {
   background: rgb(235 244 245);
-  height: 88vh;
+  height: 90vh;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.home-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .left {
   background-color: #35ac35;
