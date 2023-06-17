@@ -3,6 +3,63 @@ import signup from '../Images/registration.jpg'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 const Signup = () => {
+  const navigate = useNavigate()
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    work: '',
+    password: '',
+    cpassword: '',
+  })
+
+  const handleInputs = (e) => {
+    let name = e.target.name
+    let value = e.target.value
+
+    // setUser({ ...user, [name]: value })
+
+    // or
+
+    setUser((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }))
+  }
+
+  const postData = async (e) => {
+    e.preventDefault()
+
+    const { name, email, phone, work, password, cpassword } = user
+
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          work,
+          password,
+          cpassword,
+        }),
+      })
+
+      if (res.status === 422) {
+        alert('Invalid Registration')
+        console.log('Invalid Registration')
+      } else {
+        alert('Successfull registration')
+        navigate('/login')
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <>
       <section className="signup">
@@ -10,6 +67,7 @@ const Signup = () => {
           <div className="signup-content">
             <div className="signup-form">
               <h2 className="form-title">Sign Up</h2>
+
               <form method="POST" className="register-form" id="register-form">
                 <div className="form-group">
                   <label htmlFor="name">
@@ -21,6 +79,8 @@ const Signup = () => {
                     name="name"
                     placeholder="Enter your name"
                     autoComplete="off"
+                    value={user.name}
+                    onChange={handleInputs}
                   />
                 </div>
 
@@ -34,6 +94,8 @@ const Signup = () => {
                     name="email"
                     placeholder="Enter your Email"
                     autoComplete="off"
+                    value={user.email}
+                    onChange={handleInputs}
                   />
                 </div>
 
@@ -47,6 +109,8 @@ const Signup = () => {
                     name="phone"
                     placeholder="Enter Phone Number"
                     autoComplete="off"
+                    value={user.phone}
+                    onChange={handleInputs}
                   />
                 </div>
 
@@ -60,6 +124,8 @@ const Signup = () => {
                     name="work"
                     placeholder="Enter your profession"
                     autoComplete="off"
+                    value={user.work}
+                    onChange={handleInputs}
                   />
                 </div>
 
@@ -73,6 +139,8 @@ const Signup = () => {
                     name="password"
                     placeholder="Enter Password"
                     autoComplete="off"
+                    value={user.password}
+                    onChange={handleInputs}
                   />
                 </div>
 
@@ -86,6 +154,8 @@ const Signup = () => {
                     name="cpassword"
                     placeholder="Confirm Password"
                     autoComplete="off"
+                    value={user.cpassword}
+                    onChange={handleInputs}
                   />
                 </div>
 
@@ -96,6 +166,7 @@ const Signup = () => {
                     id="signup"
                     className="form-submit"
                     value="register"
+                    onClick={postData}
                   />
                 </div>
               </form>

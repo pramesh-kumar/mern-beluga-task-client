@@ -34,6 +34,12 @@ form#register-form {
   padding: 10px;
 }
 
+.form-button input {
+  padding: 0 !important;
+  text-align: center;
+  justify-content: center;
+  padding: 5px !important;
+}
 .form-group input {
   border: none;
   outline: none;
