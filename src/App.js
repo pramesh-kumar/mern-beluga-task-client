@@ -7,6 +7,7 @@ import About from './components/About'
 import Contact from './components/Contact'
 import Signup from './components/Signup'
 import Login from './components/Login'
+import Logout from './components/Logout'
 import ErrorPage from './components/ErrorPage'
 
 // adding css into app.js for all components
@@ -22,6 +23,7 @@ const App = () => {
         <Route exact path="/contact" element={<Contact />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/logout" element={<Logout />} />
         <Route exact path="*" element={<ErrorPage />} />
       </Routes>
     </>
