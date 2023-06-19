@@ -1,6 +1,88 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 const Contact = () => {
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  })
+
+  const callContactPage = async () => {
+    try {
+      const res = await fetch('/api/getData', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!res.status === 200) {
+        const error = new Error('Internal Server Error')
+        throw error
+      }
+
+      console.log(res)
+
+      const data = await res.json()
+      // setUserData(data)
+      setUserData({
+        ...userData,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        message: data.message,
+      })
+      console.log(userData)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    callContactPage()
+  }, [])
+
+  // we are storing data into useState
+
+  const handleInput = (e) => {
+    e.preventDefault()
+
+    const name = e.target.name
+    const value = e.target.value
+
+    setUserData({
+      ...userData,
+      [name]: value,
+    })
+  }
+
+  // sending data to backend
+
+  const submitContact = async (e) => {
+    e.preventDefault()
+
+    const { name, email, phone, message } = userData
+
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, phone, message }),
+    })
+
+    const data = await res.json()
+
+    if (res.status === 422) {
+      console.log('Data not sent !')
+    } else {
+      alert('Data sent !!')
+      console.log('Data sent !!')
+      console.log(data)
+      setUserData({ ...userData, message: '' })
+    }
+  }
+
   return (
     <>
       <div className="contact_info">
@@ -63,6 +145,8 @@ const Contact = () => {
                       placeholder="Your Name"
                       required="true"
                       autocomplete="off"
+                      value={userData.name}
+                      onChange={handleInput}
                     ></input>
 
                     <input
@@ -73,6 +157,8 @@ const Contact = () => {
                       placeholder="Your Email"
                       required="true"
                       autocomplete="off"
+                      value={userData.email}
+                      onChange={handleInput}
                     ></input>
 
                     <input
@@ -83,6 +169,8 @@ const Contact = () => {
                       placeholder="Your Phone Number"
                       required="true"
                       autocomplete="off"
+                      value={userData.phone}
+                      onChange={handleInput}
                     ></input>
                   </div>
 
@@ -94,6 +182,8 @@ const Contact = () => {
                       cols="70"
                       rows="10"
                       autocomplete="off"
+                      value={userData.message}
+                      onChange={handleInput}
                     ></textarea>
                   </div>
 
@@ -101,6 +191,8 @@ const Contact = () => {
                     <button
                       type="submit"
                       className="button contact_submit_button"
+                      name="submit"
+                      onClick={submitContact}
                     >
                       Send Message
                     </button>
