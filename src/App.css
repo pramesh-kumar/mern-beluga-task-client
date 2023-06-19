@@ -292,3 +292,10 @@ button {
     border: 2px solid rgb(231, 203, 203);
   }
 }
+
+@media (min-width: 768px) and (max-width: 999px) {
+  .profile_head {
+    /* color: red; */
+    padding-left: 70px;
+  }
+}

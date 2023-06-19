@@ -30,7 +30,7 @@ const Signup = () => {
   const postData = async (e) => {
     e.preventDefault()
 
-    const { name, email, phone, work, password, cpassword } = user
+    // const { name, email, phone, work, password, cpassword } = user
 
     try {
       const res = await fetch('/api/register', {
@@ -38,14 +38,15 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name,
-          email,
-          phone,
-          work,
-          password,
-          cpassword,
-        }),
+        // body: JSON.stringify({
+        //   name,
+        //   email,
+        //   phone,
+        //   work,
+        //   password,
+        //   cpassword,
+        // }),
+        body: JSON.stringify(user),
       })
 
       if (res.status === 422) {
