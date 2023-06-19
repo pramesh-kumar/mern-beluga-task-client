@@ -1,7 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import pms_pic from '../Images/pramesh_pic.jpeg'
+import { useNavigate } from 'react-router-dom'
 
 const About = () => {
+  const navigate = useNavigate()
+  const [userData, setUserData] = useState({})
+
+  useEffect(() => {
+    const callAboutPage = async () => {
+      try {
+        const res = await fetch('/api/about', {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        })
+
+        // status exsit in res data not exist it after .json()
+
+        if (!res.status === 200) {
+          const error = new Error('Internal Server Error')
+          throw error
+        }
+
+        const data = await res.json()
+        console.log(data)
+        // console.log(data.msg)
+        setUserData(data)
+        // console.log(userData)
+
+        if (data.msg === 'Token not found') {
+          navigate('/login')
+        }
+      } catch (error) {
+        navigate('/login')
+        console.log(error)
+      }
+    }
+    callAboutPage()
+  }, [navigate])
+
   return (
     <>
       <div className="container emp-profile mt-5">
@@ -11,10 +51,10 @@ const About = () => {
               <img src={pms_pic} alt="myPic"></img>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-8">
               <div className="profile_head">
-                <h5>Pramesh</h5>
-                <h6>Web Developer</h6>
+                <h5>{userData.name}</h5>
+                <h6>{userData.work}</h6>
 
                 <p className="profile_rating mt-3 mb-5">
                   RANKING: <span>1/10</span>
@@ -49,14 +89,14 @@ const About = () => {
               </div>
             </div>
 
-            <div className="col-md-2">
+            {/* <div className="col-md-2">
               <input
                 type="submit"
                 className="edit_profile_btn"
                 name="btnAddMore"
                 value="Edit Profile"
               ></input>
-            </div>
+            </div> */}
           </div>
 
           <div></div>
@@ -96,7 +136,7 @@ const About = () => {
                       </div>
 
                       <div className="col-md-6 data_right_side">
-                        <p>1001022</p>
+                        <p>{userData._id}</p>
                       </div>
                     </div>
 
@@ -106,7 +146,7 @@ const About = () => {
                       </div>
 
                       <div className="col-md-6 data_right_side">
-                        <p>Pramesh Kumar</p>
+                        <p>{userData.name}</p>
                       </div>
                     </div>
 
@@ -116,7 +156,7 @@ const About = () => {
                       </div>
 
                       <div className="col-md-6 data_right_side">
-                        <p>prameshkumar006@gmail.com</p>
+                        <p>{userData.email}</p>
                       </div>
                     </div>
 
@@ -126,7 +166,7 @@ const About = () => {
                       </div>
 
                       <div className="col-md-6 data_right_side">
-                        <p>6307139817</p>
+                        <p>{userData.phone}</p>
                       </div>
                     </div>
 
@@ -136,7 +176,7 @@ const About = () => {
                       </div>
 
                       <div className="col-md-6 data_right_side">
-                        <p>Software Engineer</p>
+                        <p>{userData.work}</p>
                       </div>
                     </div>
                   </div>
